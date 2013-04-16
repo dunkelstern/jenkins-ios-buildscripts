@@ -1,0 +1,64 @@
+<h2>{$project}</h2>
+<ul>
+	{foreach $versions as $version}
+		<li class="{if $version.bad eq true}bad{/if} {if $version.good eq true}good{/if}">
+			<div class="icon" style="background-image: url('icon.php?app_name={$app_name}&artifact={$version.filename}');">
+				<div class="{if $version.CFBundleIcons.CFBundlePrimaryIcon.UIPrerenderedIcon eq 0}gloss{/if}">
+				</div>
+			</div>
+			<p>
+				<b>{$version.CFBundleDisplayName}</b> ({$version.CFBundleVersion})<br />
+				{if $version.bad eq false}
+				<a class="install" href="itms-services://?action=download-manifest&url={$version.manifest_url}">Install ({round($version.size / 1024 / 1024,2)} MB)</a><a class="download" href="{$version.filename}">Download ({round($version.size / 1024 / 1024,2)} MB)</a><br clear="both" />
+				{else}
+				<span class="pulled">Pulled</span>
+				{/if}
+				<span class="small">{$version.mtime}</span>
+				<form method="post" action="state.php" class="small status" id="status_{$version.CFBundleVersion}">
+					<input type="hidden" name="id" value="{$version.CFBundleVersion}" />
+					<input type="hidden" name="project" value="{$project_id}" />
+					
+					<input type="radio" name="status" value="neutral" {if $version.bad eq false and $version.good eq false}checked="checked"{/if} id="status_neutral_{$version.CFBundleVersion}" onclick="document.getElementById('status_{$version.CFBundleVersion}').submit();">
+						<label for="status_neutral_{$version.CFBundleVersion}">Neutral</label>
+					
+					<input type="radio" name="status" value="bad" {if $version.bad eq true}checked="checked"{/if} id="status_bad_{$version.CFBundleVersion}" onclick="document.getElementById('status_{$version.CFBundleVersion}').submit();">
+						<label for="status_bad_{$version.CFBundleVersion}">Bad</label>
+					
+					<input type="radio" name="status" value="good" {if $version.good eq true}checked="checked"{/if} id="status_good_{$version.CFBundleVersion}" onclick="document.getElementById('status_{$version.CFBundleVersion}').submit();">
+						<label for="status_good_{$version.CFBundleVersion}">Good</label>
+				</form>
+			</p>
+		</li>
+	{foreachelse}
+		<li>No releases yet</li>
+	{/foreach}
+</ul>
+
+<p style="text-align:right;"><a href="logout.php">Logout</a></p>
+
+<script>
+var hide;
+if ((navigator.userAgent.match(/(iPod|iPhone|iPad)/) && navigator.userAgent.match(/AppleWebKit/))) {
+	// iPad or iPhone
+	var hide1 = document.getElementsByClassName('download');
+	var hide2 = document.getElementsByClassName('pulled');
+	var hide3 = document.getElementsByTagName('form');
+	hide = new Array;
+	for(var i = 0; i < hide1.length; i++) {
+		hide.push(hide1[i]);
+	}
+	for(var i = 0; i < hide2.length; i++) {
+		hide.push(hide2[i]);
+	}
+	for(var i = 0; i < hide3.length; i++) {
+		hide.push(hide3[i]);
+	}
+} else {
+	// desktop
+	hide = document.getElementsByClassName('install');
+}
+for(var i = 0; i < hide.length; i++) {
+	hide[i].style.display = 'none';
+}
+
+</script>

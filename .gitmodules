@@ -1,0 +1,3 @@
+[submodule "server/pngdecode"]
+	path = server/pngdecode
+	url = git://github.com/peperzaken/iPhone-optimized-PNG-reverse-script.git

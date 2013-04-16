@@ -1,0 +1,6 @@
+{
+    "require": {
+        "rodneyrehm/plist": "dev-master",
+        "smarty/smarty": "dev-trunk"
+    }
+}
