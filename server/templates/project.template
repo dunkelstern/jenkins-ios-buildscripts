@@ -15,6 +15,10 @@
 				{/if}
 				<span class="small">{$version.mtime}</span>
 				<form method="post" action="state.php" class="small status" id="status_{$version.CFBundleVersion}">
+					{if $version.changelog ne '' }
+						<a href="#" class="changelog" onclick="toggle('changelog_{$version.CFBundleVersion}')">Changelog</a>
+						<div class="changelog" id="changelog_{$version.CFBundleVersion}" style="display: none;">{$version.changelog}</div>
+					{/if}
 					<input type="hidden" name="id" value="{$version.CFBundleVersion}" />
 					<input type="hidden" name="project" value="{$project_id}" />
 					

@@ -20,7 +20,7 @@ You'll need PHP 5.2+, ZipArchive, MBString
     - password=`<md5 of your password + appended salt>`
     
 	The default user is `demo`, password is `demo`
-4. Rename the `projects/test` directory and edit `project.ini`, it needs only two keys: `project_name` is the display-name and `app_name` is the basename of the app.
+4. Rename the `projects/test` directory and edit `project.ini`, it needs only two keys: `project_name` is the display-name and `app_name` is the basename of the app. But if you want you may add `jira_link` with a URL to your Bugtracker and `jira_name` with the project shortcut the script will then link bug-IDs to the corresponding bugtracker entry.
 2. Copy the contents of `server/` to the Webroot
 
 ## Jenkins
@@ -37,6 +37,8 @@ You'll need PHP 5.2+, ZipArchive, MBString
 	rvm gemset create jenkins
 ~~~
 
-6. Setup Artifact deployment (I use the "Promoted Builds" and "Publish over FTP"  Plugins) to the webserver (upload the ipa into the `projects/<yourproject>`-directory)
+6. Copy `logparser.rb` somewhere in your `PATH`
+7. Add `jenkins_promote_action.sh` to your promote action or right after the build.
+8. Setup Artifact deployment (I use the "Promoted Builds" and "Publish over FTP"  Plugins) to the webserver (upload the ipa into the `projects/<yourproject>`-directory), you might want to include the HTML File that you generated in the previous step as it contains the Git changelog and the PHP-Script will display it along with your build.
 
 Now you can add `*.ipa`-Files via promoted builds to the `projects/<yourproject>/` directory and browse them with any Webbrowser, if you visit the page from a iOS-Device and the device is correctly provisioned you can directly install the App.

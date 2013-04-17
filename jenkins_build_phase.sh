@@ -9,4 +9,4 @@ cd ${WORKSPACE}
 set -x
 bundle install
 
-ruby ${WORKSPACE}/build.rb --id-file /Users/<user>/Cert/identity.p12 --id-password <passwort> --profile /Users/<user>/Cert/team.mobileprovision
+ruby ${WORKSPACE}/build.rb --id-file /Users/<user>/Cert/identity.p12 --id-password <passwort> --profile /Users/<user>/Cert/team.mobileprovision >"${WORKSPACE}/Build/logfile.txt"

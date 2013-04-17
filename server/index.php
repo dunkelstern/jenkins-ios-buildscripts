@@ -35,6 +35,17 @@ function parse_project($dir) {
 			$project_info['versions'][$plist["CFBundleVersion"]]['mtime'] = strftime('%Y-%m-%d %H:%M:%S', $stat['mtime']);
 			$project_info['versions'][$plist["CFBundleVersion"]]['manifest_url'] = 'http://'. $_SERVER['HTTP_HOST'].str_replace("index.php", "", $_SERVER['PHP_SELF']).'install/'.$project_info['app_name'].'/'.$artifact;			
 
+			$changelog = dirname($artifact).'/'.basename($artifact, '.ipa').'.html';
+			if (file_exists($changelog)) {
+				$log = file_get_contents($changelog);
+				if ($project_info['jira_link']) {
+					$log = preg_replace('/('.$project_info['jira_name'].'-[0-9]*)/', '<a href="'.$project_info['jira_link'].'\1">\1</a>' , $log);
+				}
+				$project_info['versions'][$plist["CFBundleVersion"]]['changelog'] = $log;
+			} else {
+				$project_info['versions'][$plist["CFBundleVersion"]]['changelog'] = '';
+			}
+
 			if (@isset($project_info['bad'])) {
 				if (array_search($plist["CFBundleVersion"], $project_info['bad']) === false) {
 					$project_info['versions'][$plist["CFBundleVersion"]]['bad'] = false;
